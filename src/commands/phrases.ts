@@ -41,12 +41,12 @@ export default class Phrases extends BaseCommand {
 
     const sorted: PhrasesByAuthor[] = Object.keys(countedMessages).map(
       author => {
-        const sortedAndFiltered = sortMessages(countedMessages[author])
-        .filter(([word, _]) =>
+        const sortedAndFiltered = sortMessages(
+          countedMessages[author]
+        ).filter(([word, _]) =>
           flags.word ? word.includes(flags.word) : true
         )
-        .filter(([phrase, _]) => phrase.length >= flags['min-length'])
-        .slice(0, flags.all ? undefined : flags['max-entries'])
+
         return {
           name: author,
           phrases: sortedAndFiltered,
@@ -63,7 +63,12 @@ export default class Phrases extends BaseCommand {
     )
 
     cli.table(
-      results,
+      results
+      .filter(
+        entry => entry.phrase && entry.phrase.length >= flags['min-length']
+      )
+      .sort((b, a) => a.count - b.count)
+      .slice(0, flags.all ? undefined : flags['max-entries']),
       {
         author: {get: row => row.author},
         phrase: {minWidth: 7, get: row => row.phrase},
