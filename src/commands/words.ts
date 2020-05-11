@@ -12,7 +12,6 @@ import BaseCommand from './base'
 const defaults = {
   wordLength: undefined,
   minCount: 1,
-  maxResults: 100,
 }
 
 const MIN_WORD_LENGTH = 3
