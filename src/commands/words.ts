@@ -70,31 +70,69 @@ export default class Words extends BaseCommand {
     })
   }
 
+  private createData(
+    content: { author: string; message: string }[],
+    search: string | undefined
+  ): { author: string; word: string; count: number }[] {
+    const wordCounts: { [author: string]: { [word: string]: number } } = {}
+
+    content.map(message =>
+      message.message
+      .split(/\b/)
+      .filter(word => word.trim().length >= MIN_WORD_LENGTH)
+      .filter(word => (search ? word.includes(search) : true))
+      .map(addWordToCount(wordCounts, message))
+    )
+
+    const sortable: { author: string; word: string; count: number }[] = []
+
+    for (const fromUser in wordCounts) {
+      if (Object.prototype.hasOwnProperty.call(wordCounts, fromUser)) {
+        for (const word in wordCounts[fromUser]) {
+          if (Object.prototype.hasOwnProperty.call(wordCounts[fromUser], word)) {
+            sortable.push({author: fromUser, word, count: wordCounts[fromUser][word]})
+          }
+        }
+      }
+    }
+
+    return sortable.sort((b, a) => {
+      return a.count - b.count
+    })
+    .filter(w => w.count >= MIN_COUNT)
+  }
+
   async run() {
     const {flags} = this.parse(Words)
     const {word, file} = flags
 
     // Get all messages
-    const data: string = fs.readFileSync(file, 'utf8')
+    const fileContents: string = fs.readFileSync(file, 'utf8')
 
     // Sort into messages by authors
-    const organisedMessages = organiseMessagesByAuthor(data)
+    const organisedMessages = organiseMessagesByAuthor(fileContents)
 
     // For each author, count words in each message
-    const countedWordsByAuthor = this.getMostWords(organisedMessages, word)
+    // const countedWordsByAuthor: {
+    //   name: string;
+    //   words: Counted[];
+    // }[] = this.getMostWords(organisedMessages, word)
 
-    for (const author of countedWordsByAuthor) {
-      this.log(`\n${author.name}`)
-      cli.table(
-        author.words
-        .filter(([word, _]) => word.length >= flags['min-length'])
-        .slice(0, flags.all ? author.words.length : flags['max-entries']),
-        {
-          word: {minWidth: 7, get: row => row[0]},
-          count: {get: row => row[1]},
-        },
-        {printLine: this.log, ...flags}
-      )
-    }
+    const data: {
+      author: string;
+      word: string;
+      count: number;
+    }[] = this.createData(organisedMessages, word)
+    cli.table(
+      data
+      .filter(({word}) => word.length >= flags['min-length'])
+      .slice(0, flags.all ? data.length : flags['max-entries']),
+      {
+        author: {get: row => row.author},
+        word: {minWidth: 7, get: row => row.word},
+        count: {get: row => row.count},
+      },
+      {printLine: this.log, ...flags}
+    )
   }
 }

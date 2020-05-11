@@ -11,7 +11,7 @@ export default abstract class BaseCommand extends Command {
       required: true,
     }),
     'max-entries': flags.integer({char: 'M', default: 10, description: 'Number of entries to display'}),
-    all: flags.boolean({char: 'M', default: false, description: 'Show all results'}),
+    all: flags.boolean({char: 'a', default: false, description: 'Show all results'}),
     ...cli.table.flags(),
   };
 }
