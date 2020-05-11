@@ -7,7 +7,7 @@ import {
   organiseMessagesByAuthor,
 } from '../utils/counting-helpers'
 import {Counted} from '../utils/interfaces'
-import BaseCommand from './base'
+import BaseCommand from '../base-commands/base'
 
 const defaults = {
   wordLength: undefined,

@@ -5,7 +5,7 @@ import {
   organiseMessagesByAuthor,
   sortMessages,
 } from '../utils/counting-helpers'
-import BaseCommand from './base'
+import BaseCommand from '../base-commands/base'
 import {Counted} from '../utils/interfaces'
 
 interface PhrasesByAuthor {
