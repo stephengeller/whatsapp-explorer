@@ -4,3 +4,10 @@ export interface AuthoredMessage {
 }
 
 export type Counted = [string, number];
+
+export interface DataEntry {
+  author: string;
+  word?: string;
+  phrase?: string;
+  count: number;
+}

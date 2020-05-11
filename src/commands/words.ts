@@ -6,7 +6,7 @@ import {
   addWordToCount,
   organiseMessagesByAuthor,
 } from '../utils/counting-helpers'
-import {Counted} from '../utils/interfaces'
+import {Counted, DataEntry} from '../utils/interfaces'
 import BaseCommand from '../base-commands/base'
 
 const defaults = {
@@ -50,10 +50,12 @@ export default class Words extends BaseCommand {
     for (const fromUser in wordCounts) {
       if (Object.prototype.hasOwnProperty.call(wordCounts, fromUser)) {
         for (const word in wordCounts[fromUser]) {
-          if (!sortable[fromUser]) {
-            sortable[fromUser] = []
+          if (Object.prototype.hasOwnProperty.call(wordCounts[fromUser], word)) {
+            if (!sortable[fromUser]) {
+              sortable[fromUser] = []
+            }
+            sortable[fromUser].push([word, wordCounts[fromUser][word]])
           }
-          sortable[fromUser].push([word, wordCounts[fromUser][word]])
         }
       }
     }
@@ -113,19 +115,10 @@ export default class Words extends BaseCommand {
     const organisedMessages = organiseMessagesByAuthor(fileContents)
 
     // For each author, count words in each message
-    // const countedWordsByAuthor: {
-    //   name: string;
-    //   words: Counted[];
-    // }[] = this.getMostWords(organisedMessages, word)
-
-    const data: {
-      author: string;
-      word: string;
-      count: number;
-    }[] = this.createData(organisedMessages, word)
+    const data: DataEntry[] = this.createData(organisedMessages, word)
     cli.table(
       data
-      .filter(({word}) => word.length >= flags['min-length'])
+      .filter(({word}) =>  word && word.length >= flags['min-length'])
       .slice(0, flags.all ? data.length : flags['max-entries']),
       {
         author: {get: row => row.author},

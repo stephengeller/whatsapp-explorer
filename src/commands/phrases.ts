@@ -6,7 +6,7 @@ import {
   sortMessages,
 } from '../utils/counting-helpers'
 import BaseCommand from '../base-commands/base'
-import {Counted} from '../utils/interfaces'
+import {Counted, DataEntry} from '../utils/interfaces'
 
 interface PhrasesByAuthor {
   name: string;
@@ -24,11 +24,12 @@ export default class Phrases extends BaseCommand {
     const {flags} = this.parse(Phrases)
 
     // Get all messages
-    const data: string = fs.readFileSync(flags.file, 'utf8')
+    const fileContents: string = fs.readFileSync(flags.file, 'utf8')
 
     // Sort into messages by authors
-    const organisedMessages = organiseMessagesByAuthor(data)
+    const organisedMessages = organiseMessagesByAuthor(fileContents)
     const countedMessages = countMessages(organisedMessages)
+
     const sorted: PhrasesByAuthor[] = Object.keys(countedMessages).map(
       author => {
         const sortedMessages = sortMessages(countedMessages[author])
@@ -42,16 +43,23 @@ export default class Phrases extends BaseCommand {
         }
       }
     )
-    sorted.forEach(author => {
-      this.log('\n' + author.name)
-      cli.table(
-        author.phrases,
-        {
-          phrase: {minWidth: 7, get: row => row[0]},
-          count: {get: row => row[1]},
-        },
-        {...flags}
-      )
-    })
+
+    const results: DataEntry[] = []
+
+    sorted.forEach(author =>
+      author.phrases.forEach(([phrase, count]) => {
+        results.push({author: author.name, phrase, count})
+      })
+    )
+
+    cli.table(
+      results,
+      {
+        author: {get: row => row.author},
+        phrase: {minWidth: 7, get: row => row.phrase},
+        count: {get: row => row.count},
+      },
+      {...flags}
+    )
   }
 }
