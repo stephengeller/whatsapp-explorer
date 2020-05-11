@@ -28,30 +28,9 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`whatsapp hello [FILE]`](#whatsapp-hello-file)
 * [`whatsapp help [COMMAND]`](#whatsapp-help-command)
 * [`whatsapp phrases [FILE]`](#whatsapp-phrases-file)
 * [`whatsapp words [FILE]`](#whatsapp-words-file)
-
-## `whatsapp hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ whatsapp hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ whatsapp hello
-  hello world from ./src/hello.ts!
-```
-
-_See code: [src/commands/hello.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.0.0/src/commands/hello.ts)_
 
 ## `whatsapp help [COMMAND]`
 
@@ -95,9 +74,9 @@ USAGE
   $ whatsapp words [FILE]
 
 OPTIONS
-  -f, --force
+  -f, --file=file  (required) File containing whatsapp messages
   -h, --help       show CLI help
-  -n, --name=name  name to print
+  -w, --word=word  Word to search
 ```
 
 _See code: [src/commands/words.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.0.0/src/commands/words.ts)_
