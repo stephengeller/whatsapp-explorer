@@ -3,4 +3,4 @@ export interface AuthoredMessage {
   author: string;
 }
 
-export type CountedWords = [string, number];
+export type Counted = [string, number];

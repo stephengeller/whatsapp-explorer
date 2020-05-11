@@ -3,8 +3,8 @@ import * as fs from 'fs'
 import * as util from 'util'
 import cli from 'cli-ux'
 
-import {cleanupMessage, addWordToCount} from '../utils/counting-helpers'
-import {CountedWords} from '../utils/interfaces'
+import {cleanupMessage, addWordToCount, organiseMessagesByAuthor} from '../utils/counting-helpers'
+import {Counted} from '../utils/interfaces'
 
 const defaults = {
   wordLength: undefined,
@@ -34,35 +34,10 @@ export default class Words extends Command {
 
   static args = [{name: 'file'}];
 
-  organiseMessagesByAuthor(
-    data: string
-  ): {
-    author: string;
-    message: string;
-  }[] {
-    const content: string = util.format(data)
-    return (
-      content
-      .split(regex)
-      //  Split by after end of datetime
-      .map((line: string) => line.substr(line.indexOf('] ') + 2, line.length))
-      //  filter out any attachments or empty lines
-      .filter(
-        (line: string | string[]) =>
-          line.length > 0 && !line.includes('<attached:')
-      )
-      //  Split by author and message
-      .map((line: string) => ({
-        author: line.split(':')[0],
-        message: cleanupMessage(line.split(':')),
-      }))
-    )
-  }
-
   getMostWords(
     content: { message: string; author: string }[],
     search: string | undefined
-  ): { name: string; words: CountedWords[] }[] {
+  ): { name: string; words: Counted[] }[] {
     const wordCounts: { [author: string]: { [word: string]: number } } = {}
 
     content.map(message =>
@@ -98,7 +73,7 @@ export default class Words extends Command {
     })
   }
 
-  renderTable(words: CountedWords[]) {
+  renderTable(words: Counted[]) {
     cli.table(words, {
       word: {
         minWidth: 7,
@@ -132,7 +107,7 @@ export default class Words extends Command {
     const data: string = fs.readFileSync(file, 'utf8')
 
     // Sort into messages by authors
-    const organisedMessages = this.organiseMessagesByAuthor(data)
+    const organisedMessages = organiseMessagesByAuthor(data, regex)
 
     // For each author, count words in each message
     const countedWordsByAuthor = this.getMostWords(organisedMessages, word)
