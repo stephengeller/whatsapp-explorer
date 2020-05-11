@@ -1,58 +1,57 @@
-import {Command, flags} from '@oclif/command'
 import cli from 'cli-ux'
 import * as fs from 'fs'
-import {countMessages, organiseMessagesByAuthor, sortMessages} from '../utils/counting-helpers'
+import {
+  countMessages,
+  organiseMessagesByAuthor,
+  sortMessages,
+} from '../utils/counting-helpers'
+import BaseCommand from './base'
+import {Counted} from '../utils/interfaces'
 
-const MAX_ENTRIES = 50
+interface PhrasesByAuthor {
+  name: string;
+  phrases: Counted[];
+}
 
-export default class Phrases extends Command {
-  static description = 'describe the command here'
+export default class Phrases extends BaseCommand {
+  static description = 'Get most common messages in Whatsapp chat';
 
-  static flags = {
-    help: flags.help({char: 'h'}),
-    word: flags.string({char: 'w', description: 'Word to search'}),
-    file: flags.string({
-      char: 'f',
-      description: 'File containing whatsapp messages',
-      required: true,
-    }),
-    ...cli.table.flags(),
-  };
+  static flags = {...BaseCommand.flags};
 
-  static args = [{name: 'file'}]
+  static args = [{name: 'file'}];
 
   async run() {
     const {flags} = this.parse(Phrases)
 
-    const {word, file} = flags
-
     // Get all messages
-    const data: string = fs.readFileSync(file, 'utf8')
+    const data: string = fs.readFileSync(flags.file, 'utf8')
 
     // Sort into messages by authors
-    const organisedMessages = organiseMessagesByAuthor(data, /\[\d*\/\d*\/\d*, /g)
+    const organisedMessages = organiseMessagesByAuthor(data)
     const countedMessages = countMessages(organisedMessages)
-    const sorted: { name: string; phrases: [string, number][] }[] = Object.keys(countedMessages).map(author => {
-      return {
-        name: author,
-        phrases: sortMessages(countedMessages[author]).slice(0, MAX_ENTRIES),
+    const sorted: PhrasesByAuthor[] = Object.keys(countedMessages).map(
+      author => {
+        const sortedMessages = sortMessages(countedMessages[author])
+        return {
+          name: author,
+          phrases: sortedMessages
+          .filter(([word, _]) =>
+            flags.word ? word.includes(flags.word) : true
+          )
+          .slice(0, flags.all ? sortedMessages.length : flags['max-entries']),
+        }
       }
-    })
+    )
     sorted.forEach(author => {
       this.log('\n' + author.name)
-      cli.table(author.phrases, {
-        phrase: {
-          minWidth: 7,
-          get: row => row[0],
+      cli.table(
+        author.phrases,
+        {
+          phrase: {minWidth: 7, get: row => row[0]},
+          count: {get: row => row[1]},
         },
-        count: {
-          get: row => row[1],
-        },
-        id: {
-          header: 'ID',
-          extended: true,
-        },
-      })
+        {...flags}
+      )
     })
   }
 }

@@ -1,5 +1,6 @@
 import {AuthoredMessage} from './interfaces'
 import * as util from 'util'
+import {option} from '@oclif/command/lib/flags'
 
 export function cleanupMessage(split: any[]) {
   return split[1].substr(1, split[1].length).replace('\r\n', '').toLowerCase()
@@ -20,11 +21,9 @@ export function addWordToCount(
 
 export function organiseMessagesByAuthor(
   data: string,
-  regex: RegExp
-): {
-  author: string;
-  message: string;
-}[] {
+  options?: { minLength?: number }
+): {author: string;message: string}[] {
+  const regex = /\[\d*\/\d*\/\d*, /g
   const content: string = util.format(data)
   return (
     content
@@ -41,6 +40,7 @@ export function organiseMessagesByAuthor(
       author: line.split(':')[0],
       message: cleanupMessage(line.split(':')),
     }))
+    // .filter(line => options?.minLength ? line.message.length >= options?.minLength : true)
   )
 }
 
