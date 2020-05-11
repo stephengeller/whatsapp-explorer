@@ -19,7 +19,7 @@ $ npm install -g whatsapp-explorer
 $ whatsapp COMMAND
 running command...
 $ whatsapp (-v|--version|version)
-whatsapp-explorer/0.0.0 darwin-x64 node-v12.16.1
+whatsapp-explorer/0.0.1 darwin-x64 node-v12.16.1
 $ whatsapp --help [COMMAND]
 USAGE
   $ whatsapp COMMAND
@@ -58,10 +58,11 @@ USAGE
   $ whatsapp phrases [FILE]
 
 OPTIONS
-  -M, --all                      Show all results
   -M, --max-entries=max-entries  [default: 10] Number of entries to display
+  -a, --all                      Show all results
   -f, --file=file                (required) File containing whatsapp messages
   -h, --help                     show CLI help
+  -l, --min-length=min-length    [default: 1] Minimum phrase length
   -w, --word=word                Word to search
   -x, --extended                 show extra columns
   --columns=columns              only show provided columns (comma-separated)
@@ -73,7 +74,7 @@ OPTIONS
   --sort=sort                    property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/commands/phrases.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.0.0/src/commands/phrases.ts)_
+_See code: [src/commands/phrases.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.0.1/src/commands/phrases.ts)_
 
 ## `whatsapp words [FILE]`
 
@@ -84,8 +85,8 @@ USAGE
   $ whatsapp words [FILE]
 
 OPTIONS
-  -M, --all                      Show all results
   -M, --max-entries=max-entries  [default: 10] Number of entries to display
+  -a, --all                      Show all results
   -f, --file=file                (required) File containing whatsapp messages
   -h, --help                     show CLI help
   -l, --min-length=min-length    [default: 3] Minimum word length
@@ -100,5 +101,5 @@ OPTIONS
   --sort=sort                    property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/commands/words.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.0.0/src/commands/words.ts)_
+_See code: [src/commands/words.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.0.1/src/commands/words.ts)_
 <!-- commandsstop -->
