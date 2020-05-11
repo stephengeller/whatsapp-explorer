@@ -70,17 +70,6 @@ export default class Words extends BaseCommand {
     })
   }
 
-  renderTable(words: Counted[]) {
-    cli.table(
-      words,
-      {
-        word: {minWidth: 7, get: row => row[0]},
-        count: {get: row => row[1]},
-      },
-      {printLine: this.log, ...flags}
-    )
-  }
-
   async run() {
     const {flags} = this.parse(Words)
     const {word, file} = flags
@@ -96,10 +85,15 @@ export default class Words extends BaseCommand {
 
     for (const author of countedWordsByAuthor) {
       this.log(`\n${author.name}`)
-      this.renderTable(
+      cli.table(
         author.words
         .filter(([word, _]) => word.length >= flags['min-length'])
-        .slice(0, flags.all ? author.words.length : flags['max-entries'])
+        .slice(0, flags.all ? author.words.length : flags['max-entries']),
+        {
+          word: {minWidth: 7, get: row => row[0]},
+          count: {get: row => row[1]},
+        },
+        {printLine: this.log, ...flags}
       )
     }
   }
