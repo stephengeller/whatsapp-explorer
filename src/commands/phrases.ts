@@ -1,5 +1,7 @@
+import {flags} from '@oclif/command'
 import cli from 'cli-ux'
 import * as fs from 'fs'
+
 import {
   countMessages,
   organiseMessagesByAuthor,
@@ -16,7 +18,14 @@ interface PhrasesByAuthor {
 export default class Phrases extends BaseCommand {
   static description = 'Get most common messages in Whatsapp chat';
 
-  static flags = {...BaseCommand.flags};
+  static flags = {
+    ...BaseCommand.flags,
+    'min-length': flags.integer({
+      description: 'Minimum phrase length',
+      char: 'l',
+      default: 1,
+    }),
+  };
 
   static args = [{name: 'file'}];
 
@@ -32,14 +41,15 @@ export default class Phrases extends BaseCommand {
 
     const sorted: PhrasesByAuthor[] = Object.keys(countedMessages).map(
       author => {
-        const sortedMessages = sortMessages(countedMessages[author])
+        const sortedAndFiltered = sortMessages(countedMessages[author])
+        .filter(([word, _]) =>
+          flags.word ? word.includes(flags.word) : true
+        )
+        .filter(([phrase, _]) => phrase.length >= flags['min-length'])
+        .slice(0, flags.all ? undefined : flags['max-entries'])
         return {
           name: author,
-          phrases: sortedMessages
-          .filter(([word, _]) =>
-            flags.word ? word.includes(flags.word) : true
-          )
-          .slice(0, flags.all ? sortedMessages.length : flags['max-entries']),
+          phrases: sortedAndFiltered,
         }
       }
     )
