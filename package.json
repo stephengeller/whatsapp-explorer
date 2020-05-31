@@ -12,6 +12,7 @@
     "@oclif/config": "^1",
     "@oclif/plugin-help": "^3",
     "cli-ux": "^5.4.5",
+    "moment": "^2.26.0",
     "tslib": "^1"
   },
   "devDependencies": {

@@ -47,8 +47,8 @@ export default class Phrases extends BaseCommand {
     const results: DataEntry[] = []
 
     sorted.forEach(author =>
-      author.phrases.forEach(([phrase, count]) => {
-        results.push({author: author.name, phrase, count})
+      author.phrases.forEach(([phrase, count, date]) => {
+        results.push({author: author.name, phrase, count, date})
       }),
     )
 
@@ -63,6 +63,7 @@ export default class Phrases extends BaseCommand {
         author: {get: row => row.author},
         phrase: {minWidth: 7, get: row => row.phrase},
         count: {get: row => row.count},
+        date: {get: row => row.date},
       },
       {...flags},
     )

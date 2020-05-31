@@ -1,5 +1,6 @@
-import {AuthoredMessage} from './interfaces'
 import * as util from 'util'
+import * as moment from 'moment'
+import {AuthoredMessage} from './interfaces'
 
 export function cleanupMessage(split: any[]) {
   return split[1]
@@ -24,53 +25,68 @@ export function addWordToCount(
 export function organiseMessagesByAuthor(
   data: string,
   options?: {minLength?: number},
-): {author: string; message: string}[] {
-  const regex = /\[\d*\/\d*\/\d*, /g
+): {author: string; message: string; date: Date}[] {
   const content: string = util.format(data)
   return (
     content
-      .split(regex)
-      //  Split by after end of datetime
-      .map((line: string) => line.substr(line.indexOf('] ') + 2, line.length))
+      .split(/^\[/gm)
       //  filter out any attachments or empty lines
-      .filter(
-        (line: string | string[]) =>
-          line.length > 0 &&
+      .filter((line: string | string[]) => {
+        return (
+          line.trim().length > 0 &&
           !line.includes('<attached:') &&
-          !line.includes(' omitted'),
-      )
+          !line.includes(' omitted') &&
+          !/^https:\/\//.test(line)
+        )
+      })
+      .map(line => {
+        const split = line.split(']')
+        const messageAndAuthor = split[1].trim()
+        const dateAndTime = split[0].split(' ')
+        const date = dateAndTime[0].replace('[', '').replace(',', '')
+        const time = dateAndTime[1]
+        const dateTime = moment(
+          `${date}-${time}`,
+          'DD/MM/YYYY-hh:mm:ss',
+        ).toDate()
+        return {
+          messageAndAuthor,
+          date: dateTime,
+        }
+      })
+
       //  Split by author and message
-      .map((line: string) => ({
-        author: line.split(':')[0],
-        message: cleanupMessage(line.split(':')),
+      .map(({messageAndAuthor, date}) => ({
+        author: messageAndAuthor.split(':')[0].trim(),
+        message: cleanupMessage(messageAndAuthor.split(':')),
+        date,
       }))
-    // .filter(line => options?.minLength ? line.message.length >= options?.minLength : true)
   )
 }
 
 interface CountedPhrasesByAuthor {
-  [phrases: string]: number
+  [phrases: string]: {count: number; date: Date}
 }
 
 export function countMessages(
   messages: AuthoredMessage[],
 ): {[author: string]: CountedPhrasesByAuthor} {
   const counts: {[author: string]: CountedPhrasesByAuthor} = {}
-  messages.forEach(({author, message}) => {
+  messages.forEach(({author, message, date}) => {
     const content = message.trim()
     counts[author]
       ? counts[author][content]
-        ? (counts[author][content] += 1)
-        : (counts[author][content] = 1)
+        ? (counts[author][content].count += 1)
+        : (counts[author][content] = {count: 1, date})
       : (counts[author] = {})
   })
   return counts
 }
 
 export function sortMessages(messages: CountedPhrasesByAuthor) {
-  const sortable: [string, number][] = []
+  const sortable: [string, number, Date][] = []
   for (const message in messages) {
-    sortable.push([message, messages[message]])
+    sortable.push([message, messages[message].count, messages[message].date])
   }
 
   sortable.sort(function(a, b) {
@@ -82,7 +98,7 @@ export function sortMessages(messages: CountedPhrasesByAuthor) {
 export function organisePhraseByAuthor(
   countedMessages: {[p: string]: CountedPhrasesByAuthor},
   searchWord?: string,
-) {
+): {name: string; phrases: [string, number, Date][]}[] {
   return Object.keys(countedMessages).map(author => {
     const sortedAndFiltered = sortMessages(
       countedMessages[author],
