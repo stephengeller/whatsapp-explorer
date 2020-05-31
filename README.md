@@ -19,7 +19,7 @@ $ npm install -g whatsapp-explorer
 $ whatsapp COMMAND
 running command...
 $ whatsapp (-v|--version|version)
-whatsapp-explorer/0.0.4 darwin-x64 node-v12.14.1
+whatsapp-explorer/0.0.5 darwin-x64 node-v12.14.1
 $ whatsapp --help [COMMAND]
 USAGE
   $ whatsapp COMMAND
@@ -74,7 +74,7 @@ OPTIONS
   --sort=sort                    property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/commands/phrases.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.0.4/src/commands/phrases.ts)_
+_See code: [src/commands/phrases.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.0.5/src/commands/phrases.ts)_
 
 ## `whatsapp words [FILE]`
 
@@ -101,5 +101,5 @@ OPTIONS
   --sort=sort                    property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/commands/words.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.0.4/src/commands/words.ts)_
+_See code: [src/commands/words.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.0.5/src/commands/words.ts)_
 <!-- commandsstop -->
