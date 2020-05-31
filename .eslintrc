@@ -5,6 +5,8 @@
   ],
   "rules": {
     "indent": "off",
-    "@typescript-eslint/member-delimiter-style": "off"
+    "@typescript-eslint/member-delimiter-style": "off",
+    "operator-linebreak": "off",
+    "space-before-function-paren": "off"
   }
 }

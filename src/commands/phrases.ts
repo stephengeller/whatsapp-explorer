@@ -41,7 +41,7 @@ export default class Phrases extends BaseCommand {
 
     const sorted: PhrasesByAuthor[] = organisePhraseByAuthor(
       countedMessages,
-      flags,
+      flags.word,
     )
 
     const results: DataEntry[] = []
