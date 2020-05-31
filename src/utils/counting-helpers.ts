@@ -74,3 +74,20 @@ export function sortMessages(messages: CountedPhrasesByAuthor) {
   })
   return sortable
 }
+
+export function organisePhraseByAuthor(countedMessages: { [p: string]: CountedPhrasesByAuthor }, flags: { "no-truncate": boolean; filter: string | undefined; sort: string | undefined; csv: boolean; all: boolean; extended: boolean; file: string; "no-header": boolean; columns: string | undefined; word: string | undefined; help: void; output: string | undefined; "max-entries": number; "min-length": number }) {
+  return Object.keys(countedMessages).map(
+    author => {
+      const sortedAndFiltered = sortMessages(
+        countedMessages[author]
+      ).filter(([word, _]) =>
+        flags.word ? word.includes(flags.word) : true
+      )
+
+      return {
+        name: author,
+        phrases: sortedAndFiltered,
+      }
+    }
+  )
+}
