@@ -3,10 +3,7 @@ import * as moment from 'moment'
 import {AuthoredMessage} from './interfaces'
 
 export function cleanupMessage(split: any[]) {
-  return split[1]
-    .substr(1, split[1].length)
-    .replace('\r\n', '')
-    .toLowerCase()
+  return split[1].substr(1, split[1].length).replace('\r\n', '')
 }
 
 export function addWordToCount(
