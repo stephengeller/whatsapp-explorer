@@ -24,14 +24,13 @@ export function addWordToCount(
 
 export function organiseMessagesByAuthor(
   data: string,
-  options?: {minLength?: number},
 ): {author: string; message: string; date: Date}[] {
   const content: string = util.format(data)
   return (
     content
       .split(/^\[/gm)
       //  filter out any attachments or empty lines
-      .filter((line: string | string[]) => {
+      .filter((line: string) => {
         return (
           line.trim().length > 0 &&
           !line.includes('<attached:') &&
@@ -85,6 +84,7 @@ export function countMessages(
 
 export function sortMessages(messages: CountedPhrasesByAuthor) {
   const sortable: [string, number, Date][] = []
+  // eslint-disable-next-line guard-for-in
   for (const message in messages) {
     sortable.push([message, messages[message].count, messages[message].date])
   }
