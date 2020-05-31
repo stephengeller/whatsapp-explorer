@@ -4,6 +4,7 @@
     "oclif-typescript"
   ],
   "rules": {
-
+    "indent": "off",
+    "@typescript-eslint/member-delimiter-style": "off"
   }
 }
