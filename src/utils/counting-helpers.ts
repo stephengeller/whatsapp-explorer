@@ -86,7 +86,9 @@ export function organisePhraseByAuthor(
   return Object.keys(countedMessages).map(author => {
     const sortedAndFiltered = sortMessages(
       countedMessages[author],
-    ).filter(([word, _]) => (searchWord ? word.includes(searchWord) : true))
+    ).filter(([word, _]) =>
+      searchWord ? word.toLowerCase().includes(searchWord.toLowerCase()) : true,
+    )
 
     return {
       name: author,
