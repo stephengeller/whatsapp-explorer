@@ -5,7 +5,7 @@ import cli from 'cli-ux'
 import {
   addWordToCount,
   organiseMessagesByAuthor,
-} from '../utils/counting-helpers'
+} from 'whatsapp-explorer-lib/dist/utils/counting-helpers'
 import BaseCommand from '../base-commands/base'
 
 const defaults = {
