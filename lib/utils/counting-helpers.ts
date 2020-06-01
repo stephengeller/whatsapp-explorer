@@ -46,17 +46,11 @@ export function organiseMessagesByAuthor(
           'DD/MM/YYYY-hh:mm:ss',
         ).toDate()
         return {
-          messageAndAuthor,
+          author: messageAndAuthor.split(':')[0].trim(),
+          message: cleanupMessage(messageAndAuthor.split(':')),
           date: dateTime,
         }
       })
-
-      //  Split by author and message
-      .map(({messageAndAuthor, date}) => ({
-        author: messageAndAuthor.split(':')[0].trim(),
-        message: cleanupMessage(messageAndAuthor.split(':')),
-        date,
-      }))
   )
 }
 
