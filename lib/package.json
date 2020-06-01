@@ -1,6 +1,6 @@
 {
   "name": "whatsapp-explorer-lib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Selection of helper function and types to be used with WhatsApp text files",
   "main": "dist/src/main.js",
   "types": "dist/src/main.d.ts",
@@ -32,6 +32,6 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "moment": "^2.26.0",
+    "moment": "^2.26.0"
   }
 }
