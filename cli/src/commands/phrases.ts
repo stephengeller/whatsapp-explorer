@@ -7,9 +7,10 @@ import {
   organiseMessagesByAuthor,
   organisePhraseByAuthor,
 } from 'whatsapp-explorer-lib/dist/utils/counting-helpers'
+import {Counted, DataEntry} from 'whatsapp-explorer-lib/dist/utils/interfaces'
+
 import * as moment from 'moment'
 import BaseCommand from '../base-commands/base'
-import {Counted, DataEntry} from '../utils/interfaces'
 
 interface PhrasesByAuthor {
   name: string
