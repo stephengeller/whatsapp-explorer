@@ -11,7 +11,7 @@ data/*
 
 # General
 .idea
-
+.DS_Store
 
 # library
 /lib/dist
