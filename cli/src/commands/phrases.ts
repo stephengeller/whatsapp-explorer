@@ -6,7 +6,8 @@ import {
   countMessages,
   organiseMessagesByAuthor,
   organisePhraseByAuthor,
-} from '../utils/counting-helpers'
+} from 'whatsapp-explorer-lib/dist/utils/counting-helpers'
+import * as moment from 'moment'
 import BaseCommand from '../base-commands/base'
 import {Counted, DataEntry} from '../utils/interfaces'
 
@@ -63,7 +64,7 @@ export default class Phrases extends BaseCommand {
         author: {get: row => row.author},
         phrase: {minWidth: 7, get: row => row.phrase},
         count: {get: row => row.count},
-        date: {get: row => row.date},
+        date: {get: row => moment(row.date).format('LLL')},
       },
       {...flags},
     )
