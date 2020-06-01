@@ -21,20 +21,24 @@ export function addWordToCount(
 
 export function organiseMessagesByAuthor(
   data: string,
+  searchTerm?: string,
 ): {author: string; message: string; date: Date}[] {
   const content: string = util.format(data)
   return (
     content
       .split(/^\[/gm)
       //  filter out any attachments or empty lines
-      .filter((line: string) => {
-        return (
+      .filter(
+        (line: string) =>
+          line.trim().length > 0 &&
+          (searchTerm
+            ? line.toLowerCase().includes(searchTerm.toLowerCase())
+            : true) &&
           line.trim().length > 0 &&
           !line.includes('<attached:') &&
           !line.includes(' omitted') &&
-          !/^https:\/\//.test(line)
-        )
-      })
+          !/^https:\/\//.test(line),
+      )
       .map(line => {
         const split = line.split(']')
         const messageAndAuthor = split[1].trim()

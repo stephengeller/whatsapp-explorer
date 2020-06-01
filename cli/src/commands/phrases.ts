@@ -1,6 +1,7 @@
 import {flags} from '@oclif/command'
 import cli from 'cli-ux'
 import * as fs from 'fs'
+import * as moment from 'moment'
 
 import {
   countMessages,
@@ -8,8 +9,6 @@ import {
   organisePhraseByAuthor,
 } from 'whatsapp-explorer-lib/dist/utils/counting-helpers'
 import {Counted, DataEntry} from 'whatsapp-explorer-lib/dist/utils/interfaces'
-
-import * as moment from 'moment'
 import BaseCommand from '../base-commands/base'
 
 interface PhrasesByAuthor {
@@ -38,7 +37,10 @@ export default class Phrases extends BaseCommand {
     const fileContents: string = fs.readFileSync(flags.file, 'utf8')
 
     // Sort into messages by authors
-    const organisedMessages = organiseMessagesByAuthor(fileContents)
+    const organisedMessages = organiseMessagesByAuthor(
+      fileContents,
+      flags.word?.toLowerCase(),
+    )
     const countedMessages = countMessages(organisedMessages)
 
     const sorted: PhrasesByAuthor[] = organisePhraseByAuthor(
