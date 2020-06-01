@@ -2,7 +2,6 @@
 *-error.log
 /.nyc_output
 /dist
-/lib
 /package-lock.json
 /tmp
 node_modules
@@ -12,3 +11,11 @@ data/*
 
 # General
 .idea
+
+
+# library
+/lib/dist
+/lib/yarn.lock
+
+# CLI
+/cli/lib
