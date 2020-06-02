@@ -2012,6 +2012,11 @@ typescript@^3.3:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
   integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
 
+typescript@^3.8.3:
+  version "3.9.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.3.tgz#d3ac8883a97c26139e42df5e93eeece33d610b8a"
+  integrity sha512-D/wqnB2xzNFIcoBG9FG8cXRDjiqSTbG2wd8DMZeQyJlP1vfTkIxH4GKveWaEBYySKIg+USu+E+EDIR47SqnaMQ==
+
 universalify@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
@@ -2037,12 +2042,13 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-whatsapp-explorer-lib@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/whatsapp-explorer-lib/-/whatsapp-explorer-lib-1.0.1.tgz#ac333aad0408bfe151802f4de6ac0433d3e23828"
-  integrity sha512-2EecjRODahiUlw2omt81ZN4gxzvXb0MiDbugA0+4YEkneLp4yFN0jpRSOmUIlfoTT5WafqA/Q+XNjhqrXLpvRw==
+whatsapp-explorer-lib@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/whatsapp-explorer-lib/-/whatsapp-explorer-lib-1.0.2.tgz#2675d78108535eaa93ba2b912a93d523bb6c8215"
+  integrity sha512-WEyIKiWiURZhw3ui/ox62HkmsU8NMf6MnAI4B3F/vuc5WD1LBZT2dyXrt13YKxiOpDWptgrGiEh5rSeh9JQXeQ==
   dependencies:
     moment "^2.26.0"
+    typescript "^3.8.3"
 
 which@^1.2.9:
   version "1.3.1"
