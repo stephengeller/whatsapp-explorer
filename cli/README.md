@@ -19,7 +19,7 @@ $ npm install -g whatsapp-explorer
 $ whatsapp COMMAND
 running command...
 $ whatsapp (-v|--version|version)
-whatsapp-explorer/0.1.3 darwin-x64 node-v12.16.1
+whatsapp-explorer/0.1.4 darwin-x64 node-v12.16.1
 $ whatsapp --help [COMMAND]
 USAGE
   $ whatsapp COMMAND
@@ -47,7 +47,7 @@ OPTIONS
   --all  see all commands in CLI
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.0.1/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.0.0/src/commands/help.ts)_
 
 ## `whatsapp phrases [FILE]`
 
@@ -74,7 +74,7 @@ OPTIONS
   --sort=sort                    property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/commands/phrases.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.1.3/src/commands/phrases.ts)_
+_See code: [src/commands/phrases.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.1.4/src/commands/phrases.ts)_
 
 ## `whatsapp words [FILE]`
 
@@ -101,5 +101,5 @@ OPTIONS
   --sort=sort                    property to sort by (prepend '-' for descending)
 ```
 
-_See code: [src/commands/words.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.1.3/src/commands/words.ts)_
+_See code: [src/commands/words.ts](https://github.com/stephengeller/whatsapp-explorer/blob/v0.1.4/src/commands/words.ts)_
 <!-- commandsstop -->
