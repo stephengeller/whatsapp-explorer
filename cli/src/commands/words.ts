@@ -77,7 +77,7 @@ export default class Words extends BaseCommand {
     const fileContents: string = fs.readFileSync(file, 'utf8')
 
     // Sort into messages by authors
-    const organisedMessages = organiseMessagesByAuthor(fileContents)
+    const organisedMessages = organiseMessagesByAuthor(fileContents, word)
 
     // For each author, count words in each message
     const data = this.createData(organisedMessages, word)

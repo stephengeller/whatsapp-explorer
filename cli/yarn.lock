@@ -2042,10 +2042,10 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-whatsapp-explorer-lib@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/whatsapp-explorer-lib/-/whatsapp-explorer-lib-1.0.2.tgz#2675d78108535eaa93ba2b912a93d523bb6c8215"
-  integrity sha512-WEyIKiWiURZhw3ui/ox62HkmsU8NMf6MnAI4B3F/vuc5WD1LBZT2dyXrt13YKxiOpDWptgrGiEh5rSeh9JQXeQ==
+whatsapp-explorer-lib@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/whatsapp-explorer-lib/-/whatsapp-explorer-lib-1.0.3.tgz#bd4aa4228b77caca3ed50e39b84eee9a649637a4"
+  integrity sha512-ncNeJ8VtP/KmOZG0fUPuQxEBwsujYwKDsUWce4uAX/bqWZp8rteMF6BWXEl2c0KQECnwNofBIWZfgkIZty/kNQ==
   dependencies:
     moment "^2.26.0"
     typescript "^3.8.3"

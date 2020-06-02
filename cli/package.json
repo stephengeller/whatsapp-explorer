@@ -14,7 +14,7 @@
     "cli-ux": "^5.4.5",
     "moment": "^2.26.0",
     "tslib": "^1",
-    "whatsapp-explorer-lib": "^1.0.2"
+    "whatsapp-explorer-lib": "^1.0.3"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1",
