@@ -19,6 +19,19 @@ export function addWordToCount(
   }
 }
 
+export function messageIsUseful(messenger: string, searchTerm?: string) {
+  return (
+    messenger.trim().length > 0 &&
+    (searchTerm
+      ? messenger.toLowerCase().includes(searchTerm.toLowerCase())
+      : true) &&
+    messenger.trim().length > 0 &&
+    !messenger.includes('<attached:') &&
+    !messenger.includes(' omitted') &&
+    !/.*: http[s]*:\/\//.test(messenger)
+  )
+}
+
 export function organiseMessagesByAuthor(
   data: string,
   searchTerm?: string,
@@ -28,17 +41,7 @@ export function organiseMessagesByAuthor(
     content
       .split(/^\[/gm)
       //  filter out any attachments or empty lines
-      .filter(
-        (line: string) =>
-          line.trim().length > 0 &&
-          (searchTerm
-            ? line.toLowerCase().includes(searchTerm.toLowerCase())
-            : true) &&
-          line.trim().length > 0 &&
-          !line.includes('<attached:') &&
-          !line.includes(' omitted') &&
-          !/^https:\/\//.test(line),
-      )
+      .filter((line: string) => messageIsUseful(line, searchTerm))
       .map(line => {
         const split = line.split(']')
         const messageAndAuthor = split[1].trim()
