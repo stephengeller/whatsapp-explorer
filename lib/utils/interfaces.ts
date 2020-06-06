@@ -13,3 +13,8 @@ export interface DataEntry {
   count: number
   date: Date
 }
+
+export interface UserWithCountedMessages {
+  name: string
+  phrases: Counted[]
+}

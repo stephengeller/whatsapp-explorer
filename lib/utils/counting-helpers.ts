@@ -1,8 +1,8 @@
 import * as util from 'util'
 import moment from 'moment'
-import {AuthoredMessage} from './interfaces'
+import {AuthoredMessage, UserWithCountedMessages} from './interfaces'
 
-export function cleanupMessage(split: any[]) {
+export function cleanupMessage(split: string[]) {
   return split[1].substr(1, split[1].length).replace('\r\n', '')
 }
 
@@ -32,6 +32,14 @@ export function messageIsUseful(messenger: string, searchTerm?: string) {
   )
 }
 
+export function getDate(line: string) {
+  const split = line.split(']')
+  const dateAndTime = split[0].split(' ')
+  const date = dateAndTime[0].replace('[', '').replace(',', '')
+  const time = dateAndTime[1]
+  return moment(`${date}-${time}`, 'DD/MM/YYYY-hh:mm:ss').toDate()
+}
+
 export function organiseMessagesByAuthor(
   data: string,
   searchTerm?: string,
@@ -45,17 +53,10 @@ export function organiseMessagesByAuthor(
       .map(line => {
         const split = line.split(']')
         const messageAndAuthor = split[1].trim()
-        const dateAndTime = split[0].split(' ')
-        const date = dateAndTime[0].replace('[', '').replace(',', '')
-        const time = dateAndTime[1]
-        const dateTime = moment(
-          `${date}-${time}`,
-          'DD/MM/YYYY-hh:mm:ss',
-        ).toDate()
         return {
           author: messageAndAuthor.split(':')[0].trim(),
           message: cleanupMessage(messageAndAuthor.split(':')),
-          date: dateTime,
+          date: getDate(line),
         }
       })
   )
@@ -93,20 +94,20 @@ export function sortMessages(messages: CountedPhrasesByAuthor) {
   return sortable
 }
 
-export function organisePhraseByAuthor(
-  countedMessages: {[p: string]: CountedPhrasesByAuthor},
-  searchWord?: string,
-): {name: string; phrases: [string, number, Date][]}[] {
-  return Object.keys(countedMessages).map(author => {
-    const sortedAndFiltered = sortMessages(
-      countedMessages[author],
-    ).filter(([word, _]) =>
-      searchWord ? word.toLowerCase().includes(searchWord.toLowerCase()) : true,
-    )
+export function organisePhraseByAuthor(countedMessages: {
+  [p: string]: CountedPhrasesByAuthor
+}): {name: string; phrases: [string, number, Date][]}[] {
+  return Object.keys(countedMessages).map(author => ({
+    name: author,
+    phrases: sortMessages(countedMessages[author]),
+  }))
+}
 
-    return {
-      name: author,
-      phrases: sortedAndFiltered,
-    }
-  })
+export function convertMessagesToCount(
+  fileContents: string,
+  searchTerm?: string,
+): UserWithCountedMessages[] {
+  const organisedMessages = organiseMessagesByAuthor(fileContents, searchTerm)
+  const countedMessages = countMessages(organisedMessages)
+  return organisePhraseByAuthor(countedMessages)
 }
