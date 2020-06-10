@@ -84,7 +84,7 @@ export function sortMessages(messages: CountedPhrasesByAuthor) {
     sortable.push([message, messages[message].count, messages[message].date])
   }
 
-  sortable.sort(function(a, b) {
+  sortable.sort(function (a, b) {
     return b[1] - a[1]
   })
   return sortable
